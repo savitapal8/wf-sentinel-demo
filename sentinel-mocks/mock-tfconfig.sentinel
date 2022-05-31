@@ -1,0 +1,965 @@
+import "strings"
+import "types"
+
+_modules = {
+	"root": {
+		"data":    {},
+		"modules": {},
+		"outputs": {},
+		"providers": {
+			"google": {
+				"alias": {
+					"": {
+						"config": {},
+						"references": {
+							"access_token": [
+								"var.access_token",
+							],
+						},
+						"version": "",
+					},
+				},
+				"config": {},
+				"references": {
+					"access_token": [
+						"var.access_token",
+					],
+				},
+				"version": "",
+			},
+			"google-beta": {
+				"alias": {
+					"": {
+						"config": {},
+						"references": {
+							"access_token": [
+								"var.access_token",
+							],
+						},
+						"version": "",
+					},
+				},
+				"config": {},
+				"references": {
+					"access_token": [
+						"var.access_token",
+					],
+				},
+				"version": "",
+			},
+		},
+		"resources": {
+			"google_compute_interconnect_attachment": {
+				"on_prem_1": {
+					"config": {
+						"edge_availability_domain": "AVAILABILITY_DOMAIN_1",
+						"name": "on-prem-attachment",
+						"type": "PARTNER",
+					},
+					"provisioners": null,
+					"references": {
+						"edge_availability_domain": [],
+						"name": [],
+						"router": [
+							"google_compute_router.foobar.id",
+							"google_compute_router.foobar",
+						],
+						"type": [],
+					},
+				},
+				"on_prem_2": {
+					"config": {
+						"edge_availability_domain": "AVAILABILITY_DOMAIN_1",
+						"mtu":    1500,
+						"name":   "on-prem-attachment",
+						"region": "eu-central-1",
+						"type":   "PARTNER",
+					},
+					"provisioners": null,
+					"references": {
+						"edge_availability_domain": [],
+						"mtu":    [],
+						"name":   [],
+						"region": [],
+						"router": [
+							"google_compute_router.foobar.id",
+							"google_compute_router.foobar",
+						],
+						"type": [],
+					},
+				},
+			},
+			"google_compute_network": {
+				"foobar": {
+					"config": {
+						"auto_create_subnetworks": false,
+						"name": "network",
+					},
+					"provisioners": null,
+					"references": {
+						"auto_create_subnetworks": [],
+						"name": [],
+					},
+				},
+			},
+			"google_compute_router": {
+				"foobar": {
+					"config": {
+						"bgp": [
+							{
+								"asn": 16550,
+							},
+						],
+						"name": "router",
+					},
+					"provisioners": null,
+					"references": {
+						"bgp": [
+							{
+								"asn": [],
+							},
+						],
+						"name": [],
+						"network": [
+							"google_compute_network.foobar.name",
+							"google_compute_network.foobar",
+						],
+					},
+				},
+			},
+			"google_dataproc_cluster": {
+				"mycluster": {
+					"config": {
+						"cluster_config": [
+							{
+								"endpoint_config": [
+									{
+										"enable_http_port_access": "true",
+									},
+								],
+								"gce_cluster_config": [
+									{
+										"service_account_scopes": [
+											"cloud-platform",
+										],
+										"tags": [
+											"foo",
+											"bar",
+										],
+									},
+								],
+								"initialization_action": [
+									{
+										"script":      "gs://dataproc-initialization-actions/stackdriver/stackdriver.sh",
+										"timeout_sec": 500,
+									},
+								],
+								"master_config": [
+									{
+										"disk_config": [
+											{
+												"boot_disk_size_gb": 30,
+												"boot_disk_type":    "pd-ssd",
+											},
+										],
+										"machine_type":  "e2-medium",
+										"num_instances": 1,
+									},
+								],
+								"preemptible_worker_config": [
+									{
+										"num_instances": 0,
+									},
+								],
+								"software_config": [
+									{
+										"image_version": "1.3.7-deb9",
+										"override_properties": {
+											"dataproc:dataproc.allow.zero.workers": "true",
+										},
+									},
+								],
+								"staging_bucket": "dataproc-staging-bucket",
+								"worker_config": [
+									{
+										"disk_config": [
+											{
+												"boot_disk_size_gb": 30,
+												"num_local_ssds":    1,
+											},
+										],
+										"machine_type":     "e2-medium",
+										"min_cpu_platform": "Intel Skylake",
+										"num_instances":    2,
+									},
+								],
+							},
+						],
+						"graceful_decommission_timeout": "120s",
+						"labels": {
+							"application_division": "pci",
+							"application_name":     "demo",
+							"application_role":     "app",
+							"au":                   "0223092",
+							"created":              "YYYYMMDD",
+							"data_compliance":      "pci",
+							"data_confidentiality": "pub",
+							"data_type":            "test",
+							"environment":          "dev",
+							"gcp_region":           "US",
+							"owner":                "hybridenv",
+						},
+						"name":   "mycluster",
+						"region": "us-central1",
+					},
+					"provisioners": null,
+					"references": {
+						"cluster_config": [
+							{
+								"endpoint_config": [
+									{
+										"enable_http_port_access": [],
+									},
+								],
+								"gce_cluster_config": [
+									{
+										"service_account": [
+											"google_service_account.default.email",
+											"google_service_account.default",
+										],
+										"service_account_scopes": [],
+										"tags": [],
+									},
+								],
+								"initialization_action": [
+									{
+										"script":      [],
+										"timeout_sec": [],
+									},
+								],
+								"master_config": [
+									{
+										"disk_config": [
+											{
+												"boot_disk_size_gb": [],
+												"boot_disk_type":    [],
+											},
+										],
+										"machine_type":  [],
+										"num_instances": [],
+									},
+								],
+								"preemptible_worker_config": [
+									{
+										"num_instances": [],
+									},
+								],
+								"software_config": [
+									{
+										"image_version":       [],
+										"override_properties": [],
+									},
+								],
+								"staging_bucket": [],
+								"worker_config": [
+									{
+										"disk_config": [
+											{
+												"boot_disk_size_gb": [],
+												"num_local_ssds":    [],
+											},
+										],
+										"machine_type":     [],
+										"min_cpu_platform": [],
+										"num_instances":    [],
+									},
+								],
+							},
+						],
+						"graceful_decommission_timeout": [],
+						"labels":                        [],
+						"name":                          [],
+						"region":                        [],
+					},
+				},
+				"mycluster_kkms": {
+					"config": {
+						"cluster_config": [
+							{
+								"encryption_config": [
+									{
+										"kms_key_name": "projects/projectId/locations/region/keyRings/keyRingName/cryptoKeys/keyName",
+									},
+								],
+								"endpoint_config": [
+									{
+										"enable_http_port_access": "true",
+									},
+								],
+								"gce_cluster_config": [
+									{
+										"service_account_scopes": [
+											"cloud-platform",
+										],
+										"tags": [
+											"foo",
+											"bar",
+										],
+									},
+								],
+								"initialization_action": [
+									{
+										"script":      "gs://dataproc-initialization-actions/stackdriver/stackdriver.sh",
+										"timeout_sec": 500,
+									},
+								],
+								"master_config": [
+									{
+										"disk_config": [
+											{
+												"boot_disk_size_gb": 30,
+												"boot_disk_type":    "pd-ssd",
+											},
+										],
+										"machine_type":  "e2-medium",
+										"num_instances": 1,
+									},
+								],
+								"preemptible_worker_config": [
+									{
+										"num_instances": 0,
+									},
+								],
+								"software_config": [
+									{
+										"image_version": "1.3.7-deb9",
+										"override_properties": {
+											"dataproc:dataproc.allow.zero.workers": "true",
+										},
+									},
+								],
+								"staging_bucket": "dataproc-staging-bucket",
+								"worker_config": [
+									{
+										"disk_config": [
+											{
+												"boot_disk_size_gb": 30,
+												"num_local_ssds":    1,
+											},
+										],
+										"machine_type":     "e2-medium",
+										"min_cpu_platform": "Intel Skylake",
+										"num_instances":    2,
+									},
+								],
+							},
+						],
+						"graceful_decommission_timeout": "120s",
+						"labels": {
+							"application_division": "pci",
+							"application_name":     "demo",
+							"application_role":     "app",
+							"au":                   "0223092",
+							"created":              "YYYYMMDD",
+							"data_compliance":      "pci",
+							"data_confidentiality": "pub",
+							"data_type":            "test",
+							"environment":          "dev",
+							"gcp_region":           "US",
+							"owner":                "hybridenv",
+						},
+						"name":   "mycluster",
+						"region": "us-central1",
+					},
+					"provisioners": null,
+					"references": {
+						"cluster_config": [
+							{
+								"encryption_config": [
+									{
+										"kms_key_name": [],
+									},
+								],
+								"endpoint_config": [
+									{
+										"enable_http_port_access": [],
+									},
+								],
+								"gce_cluster_config": [
+									{
+										"service_account_scopes": [],
+										"tags": [],
+									},
+								],
+								"initialization_action": [
+									{
+										"script":      [],
+										"timeout_sec": [],
+									},
+								],
+								"master_config": [
+									{
+										"disk_config": [
+											{
+												"boot_disk_size_gb": [],
+												"boot_disk_type":    [],
+											},
+										],
+										"machine_type":  [],
+										"num_instances": [],
+									},
+								],
+								"preemptible_worker_config": [
+									{
+										"num_instances": [],
+									},
+								],
+								"software_config": [
+									{
+										"image_version":       [],
+										"override_properties": [],
+									},
+								],
+								"staging_bucket": [],
+								"worker_config": [
+									{
+										"disk_config": [
+											{
+												"boot_disk_size_gb": [],
+												"num_local_ssds":    [],
+											},
+										],
+										"machine_type":     [],
+										"min_cpu_platform": [],
+										"num_instances":    [],
+									},
+								],
+							},
+						],
+						"graceful_decommission_timeout": [],
+						"labels":                        [],
+						"name":                          [],
+						"region":                        [],
+					},
+				},
+				"mycluster_ukms": {
+					"config": {
+						"cluster_config": [
+							{
+								"encryption_config": [
+									{},
+								],
+								"endpoint_config": [
+									{
+										"enable_http_port_access": "true",
+									},
+								],
+								"gce_cluster_config": [
+									{
+										"service_account": "somesa@saome.com",
+										"service_account_scopes": [
+											"cloud-platform",
+										],
+										"tags": [
+											"foo",
+											"bar",
+										],
+									},
+								],
+								"initialization_action": [
+									{
+										"script":      "gs://dataproc-initialization-actions/stackdriver/stackdriver.sh",
+										"timeout_sec": 500,
+									},
+								],
+								"master_config": [
+									{
+										"disk_config": [
+											{
+												"boot_disk_size_gb": 30,
+												"boot_disk_type":    "pd-ssd",
+											},
+										],
+										"machine_type":  "e2-medium",
+										"num_instances": 1,
+									},
+								],
+								"preemptible_worker_config": [
+									{
+										"num_instances": 0,
+									},
+								],
+								"software_config": [
+									{
+										"image_version": "1.3.7-deb9",
+										"override_properties": {
+											"dataproc:dataproc.allow.zero.workers": "true",
+										},
+									},
+								],
+								"staging_bucket": "dataproc-staging-bucket",
+								"worker_config": [
+									{
+										"disk_config": [
+											{
+												"boot_disk_size_gb": 30,
+												"num_local_ssds":    1,
+											},
+										],
+										"machine_type":     "e2-medium",
+										"min_cpu_platform": "Intel Skylake",
+										"num_instances":    2,
+									},
+								],
+							},
+						],
+						"graceful_decommission_timeout": "120s",
+						"labels": {
+							"application_division": "pci",
+							"application_name":     "demo",
+							"application_role":     "app",
+							"au":                   "0223092",
+							"created":              "YYYYMMDD",
+							"data_compliance":      "pci",
+							"data_confidentiality": "pub",
+							"data_type":            "test",
+							"environment":          "dev",
+							"gcp_region":           "US",
+							"owner":                "hybridenv",
+						},
+						"name":   "mycluster",
+						"region": "us-central1",
+					},
+					"provisioners": null,
+					"references": {
+						"cluster_config": [
+							{
+								"encryption_config": [
+									{
+										"kms_key_name": [
+											"google_kms_crypto_key.crypto_key.id",
+											"google_kms_crypto_key.crypto_key",
+										],
+									},
+								],
+								"endpoint_config": [
+									{
+										"enable_http_port_access": [],
+									},
+								],
+								"gce_cluster_config": [
+									{
+										"service_account":        [],
+										"service_account_scopes": [],
+										"tags": [],
+									},
+								],
+								"initialization_action": [
+									{
+										"script":      [],
+										"timeout_sec": [],
+									},
+								],
+								"master_config": [
+									{
+										"disk_config": [
+											{
+												"boot_disk_size_gb": [],
+												"boot_disk_type":    [],
+											},
+										],
+										"machine_type":  [],
+										"num_instances": [],
+									},
+								],
+								"preemptible_worker_config": [
+									{
+										"num_instances": [],
+									},
+								],
+								"software_config": [
+									{
+										"image_version":       [],
+										"override_properties": [],
+									},
+								],
+								"staging_bucket": [],
+								"worker_config": [
+									{
+										"disk_config": [
+											{
+												"boot_disk_size_gb": [],
+												"num_local_ssds":    [],
+											},
+										],
+										"machine_type":     [],
+										"min_cpu_platform": [],
+										"num_instances":    [],
+									},
+								],
+							},
+						],
+						"graceful_decommission_timeout": [],
+						"labels":                        [],
+						"name":                          [],
+						"region":                        [],
+					},
+				},
+			},
+			"google_kms_crypto_key": {
+				"crypto_key": {
+					"config": {
+						"name": "example-key",
+					},
+					"provisioners": null,
+					"references": {
+						"key_ring": [
+							"google_kms_key_ring.key_ring.id",
+							"google_kms_key_ring.key_ring",
+						],
+						"name": [],
+					},
+				},
+			},
+			"google_kms_key_ring": {
+				"key_ring": {
+					"config": {
+						"location": "global",
+						"name":     "example-keyring",
+					},
+					"provisioners": null,
+					"references": {
+						"location": [],
+						"name":     [],
+					},
+				},
+			},
+			"google_pubsub_topic": {
+				"example": {
+					"config": {
+						"name": "example-topic",
+					},
+					"provisioners": null,
+					"references": {
+						"kms_key_name": [
+							"google_kms_crypto_key.crypto_key.id",
+							"google_kms_crypto_key.crypto_key",
+						],
+						"name": [],
+					},
+				},
+				"example1": {
+					"config": {
+						"name": "example-topic-no-labels",
+					},
+					"provisioners": null,
+					"references": {
+						"name": [],
+					},
+				},
+				"kms_topic": {
+					"config": {
+						"labels": {
+							"application_division": "pci",
+							"application_name":     "demo",
+							"application_role":     "app",
+							"au":                   "0223092",
+							"created":              "YYYYMMDD",
+							"data_compliance":      "pci",
+							"data_confidentiality": "pub",
+							"data_type":            "test",
+							"environment":          "dev",
+							"gcp_region":           "US",
+							"owner":                "hybridenv",
+						},
+						"message_storage_policy": [
+							{
+								"allowed_persistence_regions": [
+									"us-central1",
+									"us-central2",
+								],
+							},
+						],
+						"name": "example-topic",
+					},
+					"provisioners": null,
+					"references": {
+						"kms_key_name": [
+							"google_kms_crypto_key.crypto_key.id",
+							"google_kms_crypto_key.crypto_key",
+						],
+						"labels": [],
+						"message_storage_policy": [
+							{
+								"allowed_persistence_regions": [],
+							},
+						],
+						"name": [],
+					},
+				},
+				"kms_topic_1": {
+					"config": {
+						"kms_key_name": "projects/project-01/locations/us-central1/keyRings/uskeyring/cryptoKeys/pubsub",
+						"labels": {
+							"application_division": "pci",
+							"application_name":     "demo",
+							"application_role":     "app",
+							"au":                   "0223092",
+							"created":              "YYYYMMDD",
+							"data_compliance":      "pci",
+							"data_confidentiality": "pub",
+							"data_type":            "test",
+							"environment":          "dev",
+							"gcp_region":           "US",
+							"owner":                "hybridenv",
+						},
+						"message_storage_policy": [
+							{
+								"allowed_persistence_regions": [
+									"us-central1",
+									"us-central2",
+								],
+							},
+						],
+						"name": "example-topic",
+					},
+					"provisioners": null,
+					"references": {
+						"kms_key_name": [],
+						"labels":       [],
+						"message_storage_policy": [
+							{
+								"allowed_persistence_regions": [],
+							},
+						],
+						"name": [],
+					},
+				},
+			},
+			"google_secret_manager_secret": {
+				"secret-basic": {
+					"config": {
+						"labels": {
+							"application_division": "pci",
+							"application_name":     "demo",
+							"application_role":     "app",
+							"au":                   "0223092",
+							"created":              "YYYYMMDD",
+							"data_compliance":      "pci",
+							"data_confidentiality": "pub",
+							"data_type":            "test",
+							"environment":          "dev",
+							"gcp_region":           "US",
+							"owner":                "hybridenv",
+						},
+						"replication": [
+							{
+								"user_managed": [
+									{
+										"replicas": [
+											{
+												"customer_managed_encryption": [
+													{},
+												],
+												"location": "us-central1",
+											},
+											{
+												"location": "us-east1",
+											},
+										],
+									},
+								],
+							},
+						],
+						"secret_id": "secret1",
+					},
+					"provisioners": null,
+					"references": {
+						"labels": [],
+						"replication": [
+							{
+								"user_managed": [
+									{
+										"replicas": [
+											{
+												"customer_managed_encryption": [
+													{
+														"kms_key_name": [
+															"google_kms_crypto_key.crypto_key.id",
+															"google_kms_crypto_key.crypto_key",
+														],
+													},
+												],
+												"location": [],
+											},
+											{
+												"location": [],
+											},
+										],
+									},
+								],
+							},
+						],
+						"secret_id": [],
+					},
+				},
+				"secret-basic-2": {
+					"config": {
+						"labels": {
+							"application_division": "pci",
+							"application_name":     "demo",
+							"application_role":     "app",
+							"au":                   "0223092",
+							"created":              "YYYYMMDD",
+							"data_compliance":      "pci",
+							"data_confidentiality": "pub",
+							"data_type":            "test",
+							"environment":          "dev",
+							"gcp_region":           "US",
+							"owner":                "hybridenv",
+						},
+						"replication": [
+							{
+								"user_managed": [
+									{
+										"replicas": [
+											{
+												"customer_managed_encryption": [
+													{
+														"kms_key_name": "projects/projectId/locations/region/keyRings/keyRingName/cryptoKeys/keyName",
+													},
+												],
+												"location": "us-central1",
+											},
+										],
+									},
+								],
+							},
+						],
+						"secret_id": "secret2",
+					},
+					"provisioners": null,
+					"references": {
+						"labels": [],
+						"replication": [
+							{
+								"user_managed": [
+									{
+										"replicas": [
+											{
+												"customer_managed_encryption": [
+													{
+														"kms_key_name": [],
+													},
+												],
+												"location": [],
+											},
+										],
+									},
+								],
+							},
+						],
+						"secret_id": [],
+					},
+				},
+				"secret-basic-3": {
+					"config": {
+						"labels": {
+							"application_division": "pci",
+							"application_name":     "demo",
+							"application_role":     "app",
+							"au":                   "0223092",
+							"created":              "YYYYMMDD",
+							"data_compliance":      "pci",
+							"data_confidentiality": "pub",
+							"data_type":            "test",
+							"environment":          "dev",
+							"gcp_region":           "US",
+							"owner":                "hybridenv",
+						},
+						"replication": [
+							{
+								"user_managed": [
+									{
+										"replicas": [
+											{
+												"location": "us-central1",
+											},
+										],
+									},
+								],
+							},
+						],
+						"secret_id": "secret2",
+					},
+					"provisioners": null,
+					"references": {
+						"labels": [],
+						"replication": [
+							{
+								"user_managed": [
+									{
+										"replicas": [
+											{
+												"location": [],
+											},
+										],
+									},
+								],
+							},
+						],
+						"secret_id": [],
+					},
+				},
+			},
+			"google_service_account": {
+				"default": {
+					"config": {
+						"account_id":   "service-account-id",
+						"display_name": "Service Account",
+					},
+					"provisioners": null,
+					"references": {
+						"account_id":   [],
+						"display_name": [],
+					},
+				},
+			},
+		},
+		"variables": {
+			"access_token": {
+				"default":     null,
+				"description": "access_token",
+			},
+		},
+	},
+}
+
+module_paths = [
+	[],
+]
+
+module = func(path) {
+	if types.type_of(path) is not "list" {
+		error("expected list, got", types.type_of(path))
+	}
+
+	if length(path) < 1 {
+		return _modules.root
+	}
+
+	addr = []
+	for path as p {
+		append(addr, "module")
+		append(addr, p)
+	}
+
+	return _modules[strings.join(addr, ".")]
+}
+
+data = _modules.root.data
+modules = _modules.root.modules
+providers = _modules.root.providers
+resources = _modules.root.resources
+variables = _modules.root.variables
+outputs = _modules.root.outputs
